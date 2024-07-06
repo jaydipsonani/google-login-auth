@@ -1,23 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
+import { useAuth0 } from '@auth0/auth0-react';
+import AuthGoogleLogin from './Google-login';
 
 function App() {
+
+  const { user, loginWithRedirect, isAuthenticated, logout } = useAuth0()
+
+  console.log("current user", user)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {isAuthenticated && <h1>Hello {user.name}</h1>}
+      {isAuthenticated ?
+        (<button onClick={() => logout({ returnTo: window.location.origin })} >Logout</button>)
+        : (<button onClick={() => loginWithRedirect()} style={{ padding: '10px' }}>Sign in with Google</button>)}
+      {/* <AuthGoogleLogin /> */}
+
     </div>
   );
 }
